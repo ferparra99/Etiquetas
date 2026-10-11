@@ -1,0 +1,2 @@
+# Etiquetas
+Escáner de etiquetas 
