@@ -1,26 +1,21 @@
-# Blueprint de Render. Render NO ejecuta docker-compose: cada servicio se declara aquí.
-# El docker-compose.yml se mantiene para desarrollo local.
-# Todos los recursos van en la MISMA región para poder hablar por la red privada.
-
 services:
-  # --- Servicio OCR (PaddleOCR). Privado: solo el backend lo llama ---
-  - type: pserv
+  # OCR como servicio web gratuito (los servicios privados no admiten plan free)
+  - type: web
     name: etiquetas-ocr
     runtime: docker
     region: virginia
-    plan: 1c-2g # Punto de partida: PaddleOCR no cabe con holgura en 512 MB. Ajustar según métricas.
+    plan: free
     dockerfilePath: ./ocr-service/Dockerfile
     dockerContext: ./ocr-service
     envVars:
       - key: PORT
         value: 10000
 
-  # --- Backend Spring Boot ---
   - type: web
     name: etiquetas-backend
     runtime: docker
     region: virginia
-    plan: 0.5c-512mb
+    plan: free
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     envVars:
@@ -34,11 +29,10 @@ services:
           property: connectionString
       - key: OCR_HOSTPORT
         fromService:
-          type: pserv
+          type: web
           name: etiquetas-ocr
           property: hostport
 
-  # --- Frontend (nginx sirve Angular y reenvía /api al backend) ---
   - type: web
     name: etiquetas-frontend
     runtime: docker
@@ -58,6 +52,6 @@ services:
 databases:
   - name: etiquetas-db
     region: virginia
-    plan: free # Revisar límites del plan gratuito de Postgres antes de guardar datos reales
+    plan: free
     databaseName: etiquetas
     user: etiquetas
