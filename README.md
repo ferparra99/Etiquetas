@@ -48,3 +48,11 @@ Regla: `api → application → domain ← infrastructure`.
 
 ## Pendiente (siguientes fases)
 Formato real de marquilla (`V07206 VJF B06`), importación de Excel, edición de destinos con cambio de código, historial de 10 escaneos, `pg_trgm` para buscar candidatos con inventarios grandes, cámara en vivo, E2E.
+
+## Desplegar en Render
+Render no ejecuta `docker-compose.yml`; usa el Blueprint `render.yaml` (en la raíz del repo).
+1. Sube el proyecto a GitHub (el `render.yaml` debe estar en la raíz).
+2. En Render: **New → Blueprint** y elige el repositorio. Crea 3 servicios (OCR privado, backend, frontend) y una base Postgres.
+3. Abre la URL `onrender.com` del servicio `etiquetas-frontend`.
+- Los logs de archivo no persisten en Render (disco efímero); el log por consola sí se ve en el panel.
+- Sin login en la v1: la URL pública queda abierta a cualquiera que la conozca.

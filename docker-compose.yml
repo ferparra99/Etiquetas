@@ -29,6 +29,7 @@ services:
       OCR_DET_BOX_THRESH: ${OCR_DET_BOX_THRESH:-}
       OCR_DET_UNCLIP_RATIO: ${OCR_DET_UNCLIP_RATIO:-}
       OCR_REC_SCORE_THRESH: ${OCR_REC_SCORE_THRESH:-}
+      OCR_ENABLE_MKLDNN: ${OCR_ENABLE_MKLDNN:-}
     volumes:
       - paddlex-cache:/root/.paddlex
     healthcheck:

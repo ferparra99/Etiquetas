@@ -5,12 +5,16 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED=1 \
-    PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True
+    PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True \
+    PORT=8000
 
 WORKDIR /srv
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY app ./app
 
+# Descarga los modelos por defecto durante el build (el volumen de caché en compose sigue funcionando).
+RUN python -m app.prefetch
+
 EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"]

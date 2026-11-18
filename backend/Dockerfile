@@ -8,6 +8,8 @@ RUN mvn -q -B -DskipTests package
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /build/target/cables-0.1.0.jar app.jar
+COPY docker-entrypoint.sh .
+RUN chmod +x docker-entrypoint.sh
 ENV LOG_DIR=/app/logs
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["./docker-entrypoint.sh"]

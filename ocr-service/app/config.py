@@ -16,6 +16,9 @@ def build_engine_kwargs() -> dict[str, Any]:
         "use_doc_unwarping": _env_bool("OCR_DOC_UNWARPING", False),
         "use_textline_orientation": _env_bool("OCR_TEXTLINE_ORIENTATION", True),
     }
+    mkldnn = os.getenv("OCR_ENABLE_MKLDNN")
+    if mkldnn:  # plan B si oneDNN falla en tu CPU: OCR_ENABLE_MKLDNN=false
+        kwargs["enable_mkldnn"] = mkldnn.strip().lower() in ("1", "true", "yes", "si")
     optional = {
         "OCR_DET_LIMIT_SIDE_LEN": ("text_det_limit_side_len", int),
         "OCR_DET_LIMIT_TYPE": ("text_det_limit_type", str),

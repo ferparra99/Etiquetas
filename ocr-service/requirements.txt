@@ -1,3 +1,5 @@
+# paddlepaddle 3.3.x tiene una regresión de oneDNN en CPU (NotImplementedError en onednn_instruction.cc).
+# Se fija 3.2.2, que según el reporte oficial funciona. No subir sin probar.
 paddlepaddle==3.2.2
 paddleocr==3.3.3
 fastapi>=0.115
