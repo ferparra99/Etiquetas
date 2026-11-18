@@ -1,0 +1,79 @@
+<main class="page">
+  <h1>Etiquetas</h1>
+
+  <label class="photo-btn">
+    Tomar foto de la marquilla
+    <input type="file" accept="image/*" capture="environment" (change)="onPhoto($event)" hidden />
+  </label>
+
+  @if (previewUrl(); as url) {
+    <img class="preview" [src]="url" alt="Foto de la marquilla" />
+  }
+
+  @if (busy()) {
+    <p class="status">Procesando…</p>
+  }
+  @if (error(); as msg) {
+    <p class="error" role="alert">{{ msg }}</p>
+  }
+
+  <section class="card">
+    <label for="code">Código leído (puedes corregirlo)</label>
+    <input
+      id="code"
+      type="text"
+      autocomplete="off"
+      autocapitalize="characters"
+      [ngModel]="text()"
+      (ngModelChange)="text.set($event)"
+      (keyup.enter)="search()"
+    />
+    <button type="button" (click)="search()" [disabled]="busy()">Buscar</button>
+
+    @if (lines().length) {
+      <ul class="lines">
+        @for (line of lines(); track $index) {
+          <li [class.low]="line.score < lowConfidence">
+            <span>{{ line.text }}</span>
+            <small>{{ percent(line.score) }}</small>
+          </li>
+        }
+      </ul>
+      @if (ocrMs() !== null) {
+        <small class="muted">OCR: {{ ocrMs() }} ms</small>
+      }
+    }
+  </section>
+
+  @if (result(); as res) {
+    @if (res.exact; as cable) {
+      <section class="card result">
+        <h2>{{ cable.code }}</h2>
+        <p><strong>Equipo:</strong> {{ cable.cableType ?? '—' }}</p>
+        <p>
+          <strong>Inicio:</strong> {{ cable.originLocation }}
+          @if (cable.originDetail) { / {{ cable.originDetail }} }
+        </p>
+        <p>
+          <strong>Destino:</strong> {{ cable.destinationLocation }}
+          @if (cable.destinationDetail) { / {{ cable.destinationDetail }} }
+        </p>
+      </section>
+    } @else if (res.candidates.length) {
+      <section class="card">
+        <h2>No hay coincidencia exacta</h2>
+        <p class="muted">¿Quisiste decir…?</p>
+        @for (c of res.candidates; track c.cable.code) {
+          <button type="button" class="candidate" (click)="pick(c)">
+            {{ c.cable.code }} <small>{{ percent(c.similarity) }}</small>
+          </button>
+        }
+      </section>
+    } @else {
+      <section class="card">
+        <h2>Sin resultados</h2>
+        <p class="muted">Ningún cable se parece a «{{ res.normalizedQuery }}».</p>
+      </section>
+    }
+  }
+</main>
