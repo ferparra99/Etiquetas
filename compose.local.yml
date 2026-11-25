@@ -1,0 +1,83 @@
+# Stack de desarrollo local. No modifica el compose de producción.
+# Puerto de la app: http://127.0.0.1:8081
+# Requiere este directorio como contexto: docker compose -f compose.local.yml up -d
+name: etiquetas-dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-etiquetas}
+      POSTGRES_USER: ${POSTGRES_USER:-etiquetas}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-etiquetas}
+    command:
+      - postgres
+      - -c
+      - shared_buffers=128MB
+      - -c
+      - work_mem=4MB
+      - -c
+      - max_connections=20
+    volumes:
+      - pgdata-dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-etiquetas} -d ${POSTGRES_DB:-etiquetas}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 384m
+
+  ocr:
+    build: ./ocr-service-local
+    restart: unless-stopped
+    environment:
+      OMP_NUM_THREADS: "2"
+      MKL_NUM_THREADS: "2"
+      OPENBLAS_NUM_THREADS: "2"
+      OCR_LANG: ${OCR_LANG:-en}
+      OCR_VERSION: ${OCR_VERSION:-PP-OCRv4}
+      OCR_USE_ANGLE_CLS: ${OCR_USE_ANGLE_CLS:-true}
+    ports:
+      - "127.0.0.1:8003:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    mem_limit: 1200m
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-etiquetas}
+      DB_USER: ${POSTGRES_USER:-etiquetas}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-etiquetas}
+      OCR_BASE_URL: http://ocr:8000
+      JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=60 -XX:+UseSerialGC -Xss512k"
+    volumes:
+      - logs-dev:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ocr:
+        condition: service_healthy
+    mem_limit: 768m
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    environment:
+      BACKEND_HOSTPORT: backend:8080
+    ports:
+      - "127.0.0.1:8081:80"
+    depends_on:
+      backend:
+        condition: service_started
+    mem_limit: 128m
+
+volumes:
+  pgdata-dev:
+  logs-dev:

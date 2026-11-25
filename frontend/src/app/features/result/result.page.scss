@@ -1,0 +1,345 @@
+@use 'sass:string';
+@use 'functions' as *;
+@use 'screen' as *;
+
+:host {
+  display: block;
+}
+
+.screen {
+  @include screen(var(--bg-primary));
+  padding-top: string.unquote('max(#{px(84)}, calc(env(safe-area-inset-top) + #{px(30)}))');
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ---- Estado + identificador ---- */
+.status {
+  padding-top: px(29);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: px(14);
+  padding: px(8) px(26) px(8) px(14);
+  border-radius: 999px;
+  background: var(--success-background);
+  color: var(--success-primary);
+  font-size: fs(22);
+  font-weight: 600;
+  line-height: normal;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: px(8);
+  padding-top: px(28);
+}
+
+.eyebrow {
+  font-size: fs(21);
+  font-weight: 500;
+  letter-spacing: px(0.4);
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.code {
+  font-weight: 600;
+  letter-spacing: px(-1.5);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  font-size: fs(25);
+  line-height: normal;
+  color: var(--text-secondary);
+}
+
+.divider {
+  width: 100%;
+  height: bw(1);
+  margin: px(34) 0 0;
+  border: 0;
+  background: var(--border-divider);
+}
+
+/* ---- Extremos: 236 | enlace 176 | 229 (medidas del mock) ---- */
+.endpoints {
+  display: grid;
+  grid-template-columns: px(236) 1fr px(229);
+  align-items: start;
+  margin-top: px(42);
+}
+
+.endpoint {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 px(20) px(29) px(33);
+  border: bw(1) solid;
+  border-radius: px(24);
+
+  &.origin {
+    border-color: var(--origin-border);
+    background: var(--origin-background);
+  }
+
+  &.destination {
+    padding-bottom: px(19);
+    border-color: var(--destination-border);
+    background: var(--destination-background);
+  }
+}
+
+.dot {
+  position: absolute;
+  top: px(24);
+  left: px(29);
+  width: px(15);
+  height: px(15);
+  border-radius: 50%;
+
+  &.origin-dot { background: var(--origin-primary); }
+  &.destination-dot { background: var(--destination-primary); }
+}
+
+.illustration {
+  display: flex;
+  align-items: center;
+
+  &.center {
+    justify-content: center;
+  }
+}
+
+.role {
+  font-size: fs(22);
+  font-weight: 500;
+  line-height: normal;
+
+  &.origin-role { color: var(--origin-primary); }
+  &.destination-role { color: var(--destination-primary); }
+}
+
+.name {
+  margin-top: px(13);
+  font-size: fs(36);
+  font-weight: 600;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.detail {
+  margin-top: px(7);
+  font-size: fs(25);
+  line-height: normal;
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.port-pill {
+  align-self: flex-start;
+  margin-top: px(14);
+  padding: px(6) px(18);
+  border: bw(1) solid var(--port-destination-border);
+  border-radius: 999px;
+  background: var(--port-destination-bg);
+  color: var(--destination-primary);
+  font-size: fs(22);
+  font-weight: 600;
+  line-height: normal;
+}
+
+/* Enlace central: líneas, puntas y conector de 80 px */
+.link {
+  position: relative;
+  align-self: stretch;
+  min-height: px(170);
+}
+
+.line {
+  position: absolute;
+  top: px(127.5);
+  height: px(3);
+
+  &.line-origin { left: 0; width: px(46); background: var(--origin-primary); }
+  &.line-destination { left: px(122); width: px(54); background: var(--destination-primary); }
+}
+
+.tip {
+  position: absolute;
+  top: px(123);
+  width: px(12);
+  height: px(12);
+  border-radius: 50%;
+
+  &.tip-origin { left: px(-6); background: var(--origin-primary); }
+  &.tip-destination { left: px(170); background: var(--destination-primary); }
+}
+
+.connector {
+  position: absolute;
+  top: px(89);
+  left: px(44);
+  display: grid;
+  place-items: center;
+  width: px(80);
+  height: px(80);
+  border: bw(3) solid var(--success-primary);
+  border-radius: 50%;
+  background: var(--bg-primary);
+}
+
+/* ---- Tarjetas ---- */
+.card {
+  margin-top: px(42);
+  padding: px(23) px(27) px(11);
+  border: bw(1) solid var(--border-neutral);
+  border-radius: px(24);
+  background: var(--bg-secondary);
+
+  &.port-card {
+    margin-top: px(27);
+    padding-top: px(26);
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: px(19);
+
+  h2 {
+    font-size: fs(24);
+    font-weight: 600;
+    line-height: normal;
+  }
+}
+
+.port-card .card-header {
+  gap: px(18);
+}
+
+.icon-box {
+  display: grid;
+  place-items: center;
+  width: px(44);
+  height: px(44);
+  border-radius: px(11);
+  background: var(--border-neutral);
+}
+
+.rows {
+  margin: px(12) 0 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: px(16);
+  min-height: px(65);
+  border-bottom: bw(1) solid var(--border-divider);
+  font-size: fs(25);
+  line-height: normal;
+
+  dt {
+    color: var(--text-secondary);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 500;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* ---- Ubicación del puerto ---- */
+.equipment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: px(16);
+  margin-top: px(14);
+
+  h3 {
+    margin: 0;
+    font-size: fs(24);
+    font-weight: 600;
+    line-height: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+.selected-pill {
+  flex: none;
+  padding: px(6) px(18);
+  border: bw(1) solid var(--success-border);
+  border-radius: 999px;
+  background: var(--success-background);
+  color: var(--success-primary);
+  font-size: fs(22);
+  font-weight: 600;
+  line-height: normal;
+}
+
+.port-divider {
+  width: 100%;
+  height: bw(1);
+  margin: px(14) 0 0;
+  border: 0;
+  background: var(--border-neutral);
+}
+
+.ports {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: px(14) px(4) 0 px(5);
+}
+
+.port {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: px(12);
+  width: px(28);
+
+  &.placeholder {
+    visibility: hidden;
+  }
+}
+
+.port-square {
+  width: px(28);
+  height: px(28);
+  border-radius: px(6);
+  background: var(--port-default);
+}
+
+.port-number {
+  font-size: fs(18);
+  line-height: normal;
+  color: var(--text-secondary);
+}
+
+.port.selected {
+  .port-square {
+    background: var(--origin-primary);
+  }
+
+  .port-number {
+    font-weight: 700;
+    color: var(--origin-primary);
+  }
+}

@@ -1,0 +1,123 @@
+@use 'functions' as *;
+@use 'screen' as *;
+
+:host {
+  display: block;
+}
+
+.screen {
+  @include screen(var(--page-bg));
+  gap: px(16);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: px(16);
+}
+
+.indicator {
+  display: grid;
+  place-items: center;
+  width: px(201.75);
+  height: px(198.64);
+  border: bw(3.108) solid var(--danger-surface-border);
+  border-radius: 50%;
+  background: var(--danger-surface-bg);
+
+  img {
+    display: block;
+    width: px(81.793);
+    height: px(78.685);
+  }
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: px(15.226);
+  width: 100%;
+}
+
+.title {
+  font-size: fs(53.29);
+  font-weight: 700;
+  line-height: px(64.71);
+  color: var(--text-strong);
+}
+
+.description {
+  font-size: fs(26.645);
+  line-height: px(38.065);
+  color: var(--text-soft);
+}
+
+/* ---- Cómo activarla ---- */
+.how {
+  display: flex;
+  flex-direction: column;
+  gap: px(46.701);
+  width: 100%;
+  padding: px(37.36);
+  border: bw(2.335) solid var(--card-border);
+  border-radius: px(37.36);
+  background: var(--card-bg);
+
+  h2 {
+    font-size: fs(37.36);
+    font-weight: 600;
+    line-height: px(44.365);
+    color: var(--text-strong);
+  }
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: px(28.02);
+
+  p {
+    flex: 1;
+    min-width: 0;
+    font-size: fs(32.69);
+    line-height: px(46.701);
+    color: var(--text-soft);
+  }
+}
+
+.step-number {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: px(65.381);
+  height: px(65.381);
+  border: bw(2.335) solid var(--step-border);
+  border-radius: px(32.69);
+  background: var(--step-bg);
+  font-size: fs(28.02);
+  font-weight: 600;
+  line-height: px(46.701);
+  color: var(--text-strong);
+}
+
+/* ---- Acciones ---- */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: px(25);
+  padding: px(50) 0;
+}
+
+.message {
+  font-size: fs(21);
+  line-height: 1.4;
+  color: var(--warning-primary);
+}

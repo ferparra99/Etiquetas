@@ -1,0 +1,48 @@
+@if (session(); as s) {
+  <main class="screen">
+    <header class="header">
+      <app-icon-button icon="arrow-left" label="Volver" (pressed)="goBack()" />
+    </header>
+
+    <section class="body">
+      <div class="summary">
+        <div class="indicator"><img src="icons/alert.svg" alt="" /></div>
+        <h1 class="title">Marquilla no registrada</h1>
+        <p class="description">No estamos seguros de la lectura. Compárala con la marquilla antes de continuar.</p>
+      </div>
+
+      <section class="compare" aria-label="Comparación de códigos">
+        <div class="block">
+          <p class="caption">{{ readingLabel() }}</p>
+          <p class="read-code">{{ s.query }}</p>
+        </div>
+        @if (suggestion(); as sug) {
+          <hr class="separator" />
+          <div class="block suggestion">
+            <p class="caption">¿Quisiste decir?</p>
+            <p class="suggested-code" [style.font-size]="suggestionFont()">{{ sug.cable.code }}</p>
+          </div>
+        }
+      </section>
+
+      <aside class="warning">
+        <p class="warning-title">Confirma con la marquilla</p>
+        <p class="warning-text">Verifica que el código impreso coincida con el de arriba antes de consultar.</p>
+      </aside>
+    </section>
+
+    <section class="actions">
+      @if (suggestion()) {
+        <app-action-button variant="primary" icon="search" label="Consultar marquilla" (pressed)="acceptSuggestion()" />
+      }
+      <app-action-button variant="secondary" icon="refresh-cw" label="Escribir etiqueta" (pressed)="editReading()" />
+      <app-action-button
+        variant="secondary"
+        icon="pencil"
+        [iconSize]="56"
+        label="Volver a escribir"
+        (pressed)="writeAgain()"
+      />
+    </section>
+  </main>
+}

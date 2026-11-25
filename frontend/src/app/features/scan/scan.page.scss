@@ -1,0 +1,217 @@
+@use 'functions' as *;
+@use 'screen' as *;
+
+:host {
+  display: block;
+}
+
+.screen {
+  @include screen(var(--bg-primary));
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: px(12);
+  padding-top: px(28);
+}
+
+.eyebrow {
+  font-size: fs(21);
+  font-weight: 500;
+  letter-spacing: px(0.4);
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.title {
+  font-size: fs(42);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.description {
+  max-width: px(535);
+  font-size: fs(22);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* ---- Vista de cámara: 641×415, radio 25, borde 2 px #34363a ---- */
+.camera {
+  position: relative;
+  height: px(415);
+  margin-top: px(45);
+  overflow: hidden;
+  border: bw(2) solid var(--border-camera);
+  border-radius: px(25);
+  background: var(--bg-surface-elevated);
+}
+
+video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Marca de agua: cuatro esquinas de 57 px a 34 px del borde (simétricas). */
+.corner {
+  position: absolute;
+  width: px(57);
+  height: px(57);
+  pointer-events: none;
+
+  &.tl { top: px(34); left: px(34); }
+  &.tr { top: px(34); right: px(34); }
+  &.bl { bottom: px(34); left: px(34); }
+  &.br { right: px(34); bottom: px(34); }
+}
+
+.camera-status {
+  position: absolute;
+  right: 0;
+  bottom: px(40);
+  left: 0;
+  text-align: center;
+  font-size: fs(22);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* ---- Tarjeta "Resultado de la lectura" ---- */
+.card {
+  margin-top: px(49);
+  padding: px(28) px(35) px(38);
+  border: bw(1) solid var(--border-neutral);
+  border-radius: px(22);
+  background: var(--bg-secondary);
+}
+
+.reading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: px(16);
+}
+
+.reading-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: px(18);
+  min-width: 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: px(26);
+  font-size: fs(21);
+  line-height: normal;
+  color: var(--text-secondary);
+}
+
+.identifier {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: px(-1);
+  line-height: 1.1;
+
+  &::placeholder {
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
+
+  &:not([readonly]):focus-visible {
+    border-radius: px(8);
+    outline: 2px solid var(--success-primary);
+    outline-offset: px(6);
+  }
+}
+
+.confidence {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: px(5);
+  padding-top: px(29);
+}
+
+.confidence-label {
+  font-size: fs(21);
+  line-height: normal;
+  color: var(--text-secondary);
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: px(10);
+  padding: px(10) px(22) px(10) px(16);
+  border: bw(1) solid var(--success-border);
+  border-radius: 999px;
+  background: var(--success-background);
+  color: var(--success-primary);
+
+  &.medium {
+    border-color: rgba(245, 166, 35, 0.35);
+    background: var(--warning-background);
+    color: var(--warning-primary);
+  }
+
+  &.low {
+    border-color: rgba(255, 82, 82, 0.35);
+    background: var(--error-background);
+    color: var(--error-primary);
+  }
+}
+
+.check {
+  width: px(32);
+  height: px(32);
+}
+
+.pill-value {
+  font-size: fs(24);
+  font-weight: 600;
+  line-height: normal;
+}
+
+.message {
+  margin-top: px(18);
+  font-size: fs(21);
+  line-height: 1.4;
+  color: var(--warning-primary);
+}
+
+.link {
+  display: inline;
+  margin-left: px(6);
+  color: var(--success-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ---- Acciones: 90 px, separación 25, 50 px arriba y abajo ---- */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: px(25);
+  padding: px(50) 0;
+}

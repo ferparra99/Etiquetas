@@ -1,0 +1,116 @@
+@if (view(); as cable) {
+  <main class="screen">
+    <header class="nav">
+      <app-icon-button icon="arrow-left" label="Volver" (pressed)="goBack()" />
+      <app-icon-button variant="outline" icon="scan" label="Escanear de nuevo" (pressed)="scanAgain()" />
+    </header>
+
+    <section class="status">
+      <span class="status-pill">
+        <app-icon name="check-circle" [width]="36" />
+        Marquilla encontrada
+      </span>
+    </section>
+
+    <section class="identity">
+      <p class="eyebrow">Identificador de marquilla</p>
+      <h1 class="code" [style.font-size]="codeFont()">{{ cable.code }}</h1>
+      @if (cable.description) {
+        <p class="description">{{ cable.description }}</p>
+      }
+    </section>
+
+    <hr class="divider" />
+
+    <section class="endpoints" aria-label="Extremos del cable">
+      <article class="endpoint origin" [style.padding-top]="px(cable.origin.icon.padTop)">
+        <span class="dot origin-dot"></span>
+        <div
+          class="illustration"
+          [class.center]="cable.origin.icon.align === 'center'"
+          [style.height]="px(cable.origin.icon.height)"
+          [style.margin-bottom]="px(cable.origin.icon.gapAfter)"
+        >
+          <app-icon [name]="cable.origin.icon.name" [width]="cable.origin.icon.width" [height]="cable.origin.icon.height" />
+        </div>
+        <p class="role origin-role">Origen</p>
+        <h2 class="name" [style.font-size]="nameFont(cable.origin.name)">{{ cable.origin.name }}</h2>
+        @if (cable.origin.detail) {
+          <p class="detail">{{ cable.origin.detail }}</p>
+        }
+      </article>
+
+      <div class="link" aria-hidden="true">
+        <span class="line line-origin"></span>
+        <span class="line line-destination"></span>
+        <span class="tip tip-origin"></span>
+        <span class="tip tip-destination"></span>
+        <span class="connector"><app-icon name="plug" [width]="40" /></span>
+      </div>
+
+      <article class="endpoint destination" [style.padding-top]="px(cable.destination.icon.padTop)">
+        <span class="dot destination-dot"></span>
+        <div
+          class="illustration"
+          [class.center]="cable.destination.icon.align === 'center'"
+          [style.height]="px(cable.destination.icon.height)"
+          [style.margin-bottom]="px(cable.destination.icon.gapAfter)"
+        >
+          <app-icon
+            [name]="cable.destination.icon.name"
+            [width]="cable.destination.icon.width"
+            [height]="cable.destination.icon.height"
+          />
+        </div>
+        <p class="role destination-role">Destino</p>
+        <h2 class="name" [style.font-size]="nameFont(cable.destination.name)">{{ cable.destination.name }}</h2>
+        @if (cable.destination.detail) {
+          <span class="port-pill">{{ cable.destination.detail }}</span>
+        }
+      </article>
+    </section>
+
+    <section class="card route">
+      <div class="card-header">
+        <span class="icon-box"><app-icon name="list" [width]="26" /></span>
+        <h2>Información del recorrido</h2>
+      </div>
+      <dl class="rows">
+        @for (row of cable.route; track row.label) {
+          <div class="row">
+            <dt>{{ row.label }}</dt>
+            <dd>{{ row.value }}</dd>
+          </div>
+        }
+      </dl>
+    </section>
+
+    @if (cable.portLocation; as port) {
+      <section class="card port-card">
+        <div class="card-header">
+          <app-icon name="info" [width]="32" />
+          <h2>Ubicación del puerto</h2>
+        </div>
+        <div class="equipment">
+          <h3>{{ port.equipmentName }}</h3>
+          <span class="selected-pill">{{ port.portLabel }}</span>
+        </div>
+        <hr class="port-divider" />
+        @for (row of portRows(); track $index) {
+          <div class="ports">
+            @for (n of row; track $index) {
+              @if (n !== null) {
+                <div class="port" [class.selected]="n === port.portNumber">
+                  <span class="port-square"></span>
+                  <span class="port-number">{{ n }}</span>
+                </div>
+              } @else {
+                <div class="port placeholder" aria-hidden="true"></div>
+              }
+            }
+          </div>
+        }
+      </section>
+    }
+  </main>
+}

@@ -21,8 +21,8 @@ docker compose up --build
 La primera vez, el servicio `ocr` descarga los modelos (se guardan en el volumen `paddlex-cache`) y tarda en quedar listo.
 
 ## Probar desde el celular
-Abre `http://IP_DEL_PC:8080` en el celular (misma red). El botón usa `<input capture>`, que abre la cámara nativa y **no necesita HTTPS**.
-La cámara integrada con `getUserMedia` (fase 6) sí requiere HTTPS.
+La pantalla principal (P01) usa la **cámara trasera en vivo** (`getUserMedia`), que el navegador solo permite en **HTTPS** o en `localhost`.
+- En la red local (`http://IP_DEL_PC:8080`) el navegador bloquea la cámara: la app lo avisa y se puede usar la pantalla P03 (escribir el código). Para probar la cámara en local usa un túnel HTTPS (p. ej. `cloudflared tunnel --url http://localhost:8080`) o Chrome en `chrome://flags` → *Insecure origins treated as secure*.
 
 Probar solo el OCR: `curl -F "file=@marquilla.jpg" http://localhost:8000/ocr`
 
@@ -38,9 +38,13 @@ backend/src/main/java/com/etiquetas/cables/
 ```
 Regla: `api → application → domain ← infrastructure`.
 
+## Frontend (Angular · diseño de Figma «Cable Trace – UI Etiquetas»)
+Ver `frontend/README.md`: pantallas P01–P05, escala de diseño, estructura y pruebas.
+
 ## Logs
 - Cada caso de uso marcado con `@LogFeature("nombre")` registra inicio, fin, duración y errores.
 - Salida en consola y en `backend/logs/etiquetas-AAAA-MM-DD.log` (30 días).
+- El frontend usa `@LogFeature` y `LoggerService`: imprime en la consola del navegador y envía los eventos a `POST /api/client-logs`, que los escribe en ese mismo archivo (módulo `frontend`).
 - Cambios de código: `docs/changelog/REQUESTS_LOG.md`.
 
 ## Pruebas del backend
@@ -48,11 +52,3 @@ Regla: `api → application → domain ← infrastructure`.
 
 ## Pendiente (siguientes fases)
 Formato real de marquilla (`V07206 VJF B06`), importación de Excel, edición de destinos con cambio de código, historial de 10 escaneos, `pg_trgm` para buscar candidatos con inventarios grandes, cámara en vivo, E2E.
-
-## Desplegar en Render
-Render no ejecuta `docker-compose.yml`; usa el Blueprint `render.yaml` (en la raíz del repo).
-1. Sube el proyecto a GitHub (el `render.yaml` debe estar en la raíz).
-2. En Render: **New → Blueprint** y elige el repositorio. Crea 3 servicios (OCR privado, backend, frontend) y una base Postgres.
-3. Abre la URL `onrender.com` del servicio `etiquetas-frontend`.
-- Los logs de archivo no persisten en Render (disco efímero); el log por consola sí se ve en el panel.
-- Sin login en la v1: la URL pública queda abierta a cualquiera que la conozca.

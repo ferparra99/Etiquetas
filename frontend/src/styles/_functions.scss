@@ -1,0 +1,17 @@
+@use 'sass:string';
+
+// Unidad de diseño: el mock de Figma está hecho sobre un lienzo de 709 px de ancho.
+// px(34) = 34 px del mock, escalado al ancho real del dispositivo (ver --u en styles.scss).
+@function px($n) {
+  @return string.unquote('calc(#{$n} * var(--u))');
+}
+
+// Bordes finos: nunca menos de 1 px reales para que no desaparezcan en pantallas pequeñas.
+@function bw($n) {
+  @return string.unquote('max(1px, calc(#{$n} * var(--u)))');
+}
+
+// Tamaño de texto: escala con el mock pero nunca baja de 11 px reales (legibilidad).
+@function fs($n) {
+  @return string.unquote('max(11px, calc(#{$n} * var(--u)))');
+}

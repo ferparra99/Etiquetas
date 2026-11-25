@@ -1,0 +1,32 @@
+<main class="screen">
+  <header class="nav">
+    <app-icon-button icon="arrow-left" label="Volver" (pressed)="goBack()" />
+  </header>
+
+  <section class="body">
+    <div class="indicator"><img src="icons/camera-off.svg" alt="" /></div>
+
+    <div class="copy">
+      <h1 class="title">Necesitamos la cámara</h1>
+      <p class="description">Para escanear marquillas, permite el acceso a la cámara en tu navegador.</p>
+    </div>
+
+    <section class="how" aria-labelledby="how-title">
+      <h2 id="how-title">Cómo activarla</h2>
+      @for (step of steps; track $index) {
+        <div class="step">
+          <span class="step-number">{{ $index + 1 }}</span>
+          <p>{{ step }}</p>
+        </div>
+      }
+    </section>
+  </section>
+
+  <section class="actions">
+    @if (message(); as text) {
+      <p class="message" role="alert">{{ text }}</p>
+    }
+    <app-action-button variant="primary" icon="search" label="Reintentar" [disabled]="checking()" (pressed)="retry()" />
+    <app-action-button variant="secondary" icon="refresh-cw" label="Escribir etiqueta" (pressed)="writeLabel()" />
+  </section>
+</main>

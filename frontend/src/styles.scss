@@ -1,0 +1,104 @@
+/* Cable Trace — estilos globales. Tokens = variables de color del archivo de Figma. */
+:root {
+  /* Escala: 709 px (ancho del lienzo del mock) -> ancho real, con tope de 480 px (JSON de diseño). */
+  --u: calc(min(100vw, 480px) / 709);
+
+  /* Fondos */
+  --bg-primary: #000000;
+  --bg-secondary: #0c0d11;
+  --bg-surface-elevated: #16191e;
+  --bg-surface-muted: #111318;
+  /* Texto */
+  --text-primary: #ffffff;
+  --text-secondary: #afafaf;
+  --text-tertiary: #777777;
+  --text-disabled: #555555;
+  /* Origen / destino */
+  --origin-primary: #00c875;
+  --origin-background: #00150c;
+  --origin-border: #003d25;
+  --origin-soft: #002516;
+  --destination-primary: #2196f3;
+  --destination-background: #06101f;
+  --destination-border: #142c49;
+  --destination-soft: #0a1b31;
+  /* Estados */
+  --success-primary: #00c875;
+  --success-background: #002416;
+  --success-border: #004c2b;
+  --success-button: #001b10;
+  --warning-primary: #f5a623;
+  --warning-background: #241b08;
+  --error-primary: #ff5252;
+  --error-background: #290d0d;
+  /* Bordes y botones */
+  --border-neutral: #24262b;
+  --border-divider: #202126;
+  --border-camera: #34363a;
+  --border-button: #292c32;
+  --button-secondary: #1a1d22;
+  --icon-neutral: #d0d0d0;
+  /* Puertos */
+  --port-default: #24272d;
+  --port-destination-bg: #071b32;
+  --port-destination-border: #16416d;
+
+  /* Pantallas P03–P05 (colores del mock que no son variables de Figma) */
+  --page-bg: #0b0e11;
+  --text-strong: #e8edf2;
+  --text-soft: #9aa3ad;
+  --card-bg: #15191e;
+  --card-border: #232930;
+  --attention-bg: #2a2110;
+  --attention-border: #5a4410;
+  --attention-text: #fbbf24;
+  --danger-surface-bg: #1e1518;
+  --danger-surface-border: #382a30;
+  --step-bg: #20272e;
+  --step-border: #2a3038;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  color-scheme: dark;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  text-size-adjust: 100%;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+app-root {
+  display: block;
+  max-width: 480px;
+  min-height: 100dvh;
+  margin: 0 auto;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}

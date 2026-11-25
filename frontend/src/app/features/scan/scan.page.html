@@ -1,0 +1,89 @@
+<main class="screen">
+  <header class="nav">
+    <app-icon-button icon="arrow-left" label="Volver" (pressed)="goBack()" />
+    <app-icon-button icon="cam" label="Capturar marquilla" [disabled]="!canCapture()" (pressed)="capture()" />
+  </header>
+
+  <section class="heading">
+    <p class="eyebrow">Lectura de marquilla</p>
+    <h1 class="title">Escanea el cable</h1>
+    <p class="description">Alinea la marquilla dentro del recuadro para capturarla automáticamente</p>
+  </section>
+
+  <section class="camera" aria-label="Vista de la cámara trasera" (click)="capture()">
+    <video #video playsinline muted autoplay></video>
+    <img class="corner tl" src="icons/corner-tl.svg" alt="" />
+    <img class="corner tr" src="icons/corner-tr.svg" alt="" />
+    <img class="corner bl" src="icons/corner-bl.svg" alt="" />
+    <img class="corner br" src="icons/corner-br.svg" alt="" />
+    @if (phase() === 'processing') {
+      <p class="camera-status" role="status">Leyendo marquilla…</p>
+    }
+  </section>
+
+  <section class="card" aria-live="polite">
+    <div class="reading">
+      <div class="reading-main">
+        <div class="card-header">
+          <app-icon name="scan-text" [width]="44" />
+          <span>Resultado de la lectura</span>
+        </div>
+        <input
+          class="identifier"
+          type="text"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          placeholder="Esperando lectura"
+          aria-label="Código leído"
+          [style.font-size]="identifierFont()"
+          [value]="identifier()"
+          [readOnly]="phase() !== 'read'"
+          (input)="onIdentifierInput($event)"
+          (keydown.enter)="consult()"
+        />
+      </div>
+
+      @if (confidence(); as c) {
+        <div class="confidence">
+          <span class="pill" [class]="c.level">
+            <svg class="check" viewBox="0 0 36 36" aria-hidden="true">
+              <path
+                d="M18 34.5C27.1127 34.5 34.5 27.1127 34.5 18C34.5 8.8873 27.1127 1.5 18 1.5C8.8873 1.5 1.5 8.8873 1.5 18C1.5 27.1127 8.8873 34.5 18 34.5Z"
+                fill="currentColor"
+              />
+              <path
+                d="M11.25 18.75L15.75 23.25L24.75 13.5"
+                fill="none"
+                stroke="#00150C"
+                stroke-width="2.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span class="pill-value">{{ c.percent }}%</span>
+          </span>
+          <span class="confidence-label">Confianza</span>
+        </div>
+      }
+    </div>
+
+    @if (message(); as text) {
+      <p class="message" role="alert">
+        {{ text }}
+        <button type="button" class="link" (click)="writeManually()">Escribir etiqueta</button>
+      </p>
+    }
+  </section>
+
+  <section class="actions">
+    <app-action-button
+      variant="primary"
+      icon="search"
+      label="Consultar marquilla"
+      [disabled]="!canConsult()"
+      (pressed)="consult()"
+    />
+    <app-action-button variant="secondary" icon="refresh-cw" label="Tomar de nuevo" (pressed)="retake()" />
+  </section>
+</main>

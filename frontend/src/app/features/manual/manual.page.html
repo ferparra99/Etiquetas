@@ -1,0 +1,47 @@
+<main class="screen">
+  <header class="header">
+    <app-icon-button icon="arrow-left" label="Volver" (pressed)="goBack()" />
+  </header>
+
+  <section class="body">
+    <div class="intro">
+      <p class="eyebrow">Búsqueda manual</p>
+      <h1 class="title">Buscar por código</h1>
+      <p class="description">Escribe el código que aparece en la marquilla del cable.</p>
+    </div>
+
+    <div class="field">
+      <label class="label" for="code">Código de la marquilla</label>
+      <div class="input-box">
+        <input
+          #codeInput
+          id="code"
+          type="text"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          placeholder="CBL-00125"
+          [style.font-size]="codeFont()"
+          [value]="code()"
+          (input)="onInput($event)"
+          (keydown.enter)="consult()"
+        />
+      </div>
+      <p class="hint">Ejemplo: CBL-00125</p>
+      @if (error(); as text) {
+        <p class="error" role="alert">{{ text }}</p>
+      }
+    </div>
+  </section>
+
+  <section class="actions">
+    <app-action-button
+      variant="primary"
+      icon="search"
+      label="Consultar marquilla"
+      [disabled]="!canConsult()"
+      (pressed)="consult()"
+    />
+    <app-action-button variant="secondary" icon="refresh-cw" label="Volver a escanear" (pressed)="scanAgain()" />
+  </section>
+</main>

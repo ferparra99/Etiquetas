@@ -7,6 +7,6 @@ RUN npm run build
 
 FROM nginx:alpine
 # La imagen de nginx reemplaza ${VARIABLES} de /etc/nginx/templates/*.template al arrancar.
-ENV PORT=80 BACKEND_HOSTPORT=backend:8080
+ENV BACKEND_HOSTPORT=backend:8080
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html

@@ -1,0 +1,35 @@
+@use 'functions' as *;
+
+:host {
+  display: inline-block;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: px(68);
+  height: px(68);
+  border-radius: 50%;
+  background: var(--bg-surface-elevated);
+  transition: opacity 200ms ease, transform 200ms ease;
+
+  &.outline {
+    background: transparent;
+    border: bw(1.5) solid var(--border-neutral);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--success-primary);
+    outline-offset: 2px;
+  }
+}

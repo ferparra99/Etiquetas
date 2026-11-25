@@ -1,0 +1,15 @@
+@use 'sass:string';
+@use 'functions' as *;
+
+// Contenedor base de una pantalla (padding del mock: 34 px laterales, 85 px arriba, 24 px abajo).
+// El alto de la barra de estado del SO no se dibuja: se respeta con safe-area-inset.
+@mixin screen($background: var(--bg-primary)) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: $background;
+  padding-top: string.unquote('max(#{px(85)}, calc(env(safe-area-inset-top) + #{px(31)}))');
+  padding-right: px(34);
+  padding-bottom: string.unquote('calc(#{px(24)} + env(safe-area-inset-bottom))');
+  padding-left: px(34);
+}

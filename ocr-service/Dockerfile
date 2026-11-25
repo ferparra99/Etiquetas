@@ -5,8 +5,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED=1 \
-    PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True \
-    PORT=8000
+    PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True
 
 WORKDIR /srv
 COPY requirements.txt .
@@ -17,4 +16,4 @@ COPY app ./app
 RUN python -m app.prefetch
 
 EXPOSE 8000
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
